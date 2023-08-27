@@ -1,0 +1,69 @@
+.hopscotch-player-ios-app-style {
+	display: block;
+	/* position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%; */
+}
+
+/* hopscotch-player > canvas {
+	size: inherit;
+} */
+button {
+	color: var(--ctp-macchiato-text);
+	background-color: var(--ctp-macchiato-crust);
+	border: solid thin var(--ctp-macchiato-surface1);
+	margin: 1px;
+	font-weight: lighter;
+}
+label {
+	color: var(--ctp-macchiato-text);
+}
+select {
+	color: var(--ctp-macchiato-text);
+	background-color: var(--ctp-macchiato-crust);
+	border: solid thin var(--ctp-macchiato-surface1);
+	margin: 1px;
+	font-weight: lighter;
+}
+button:hover {
+	color: var(--ctp-macchiato-crust);
+	background-color: var(--ctp-macchiato-text);
+}
+#petrichor-hs-performance-menu {
+	list-style: none;
+	background-color: var(--ctp-macchiato-mantle);
+	padding: 1em;
+}
+.petrichor-hs-performance-summary-item {
+	color: var(--ctp-macchiato-text);
+	background-color: var(--ctp-macchiato-base);
+	margin: 1px;
+	list-style-type: none;
+}
+.petrichor-hs-performance-item-key {
+	color: var(--ctp-macchiato-yellow);
+	padding-right: 0.5em;
+}
+.petrichor-hs-performance-item-key.important {
+	color: var(--ctp-macchiato-red);
+	padding-right: 0.5em;
+}
+a {
+	color: var(--ctp-macchiato-sky);
+	text-decoration: none;
+	font-style: italic;
+}
+.petrichor-hs-performance-highlighted {
+	border: dotted thick var(--ctp-macchiato-red);
+	scale: 1.1;
+}
+.petrichor-hs-percentage-note {
+	background-color: var(--ctp-macchiato-base);
+	color: var(--ctp-macchiato-text);
+	opacity: 0.9;
+}
+.petrichor-hs-percentage-note:hover {
+	opacity: 0.1;
+}

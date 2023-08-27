@@ -1,0 +1,40 @@
+body {
+	margin: 0px;
+	background-color: var(--ctp-macchiato-crust);
+}
+#petrichor-hs-player-editor-grid {
+	display: grid;
+	grid-template-columns: calc(50% - 4px) 8px calc(50% - 4px);
+}
+hopscotch-player {
+	width: 100%;
+	position: relative;
+	height: fit-content;
+}
+#petrichor-main-grid-first-column {
+	max-width: 100%;
+}
+hopscotch-player > canvas {
+	width:100%;
+	position: absolute;
+	top:0px;
+	left:0px;
+}
+hopscotch-player > :last-child {
+	position: relative;
+}
+#petrichor-main-grid-separator {
+	background-color: var(--ctp-macchiato-overlay1);
+	position: relative;
+}
+#petrichor-main-grid-separator-grabber {
+	background-color: var(--ctp-macchiato-sky);
+	margin: calc(50% - 2px);
+	width: 4px;
+	height: 100%;
+	cursor: col-resize;
+}
+h1 {
+	color: var(--ctp-macchiato-text);
+	font-family: sans-serif;
+}
