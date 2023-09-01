@@ -10,23 +10,14 @@ function petrichorSummarizeEvents(events, sortByKey, shouldSortDescending) {
 	let summarizedBlocks = []
 	for (const petrichorId in events) {
 		if (Object.hasOwnProperty.call(events, petrichorId)) {
-			const performanceEventsList = events[petrichorId];
-			let minTime = Infinity
-			let maxTime = -Infinity
-			let totalTime = 0
-			for (const event of performanceEventsList) {
-				const time = event.end-event.start
-				maxTime = Math.max(maxTime,time)
-				minTime = Math.min(minTime,time)
-				totalTime += time
-			}
+			const performanceEventsSummary = events[petrichorId];
 			const summarizedBlock = {
 				petrichorId: petrichorId,
-				executionCount: performanceEventsList.length,
-				maximumExecutionTime: maxTime,
-				minimumExecutionTime: minTime,
-				totalExecutionTime: totalTime,
-				averageExecutionTime: totalTime/performanceEventsList.length
+				executionCount: performanceEventsSummary.executionCount,
+				maximumExecutionTime: performanceEventsSummary.maxTime,
+				minimumExecutionTime: performanceEventsSummary.minTime,
+				totalExecutionTime: performanceEventsSummary.totalTime,
+				averageExecutionTime: performanceEventsSummary.totalTime/performanceEventsSummary.executionCount
 			}
 			summarizedBlocks.push(summarizedBlock)
 		}
@@ -3120,12 +3111,16 @@ console.log("Webplayer v2.2.3 - 2023/03/23 (production)");
             }, t.prototype.toString = function() {
                 return o.SourceFormatter.stageParamToSrc(this.value, this.childBlock)
             }, t.prototype.childBlockValue = function(e) {
-				let event = {start:performance.now()} //PETRICHOR-MOD start
+				const startTime = performance.now() //PETRICHOR-MOD start
                 const result = this.childBlock ? this.childBlock.computedValue(e) : null
-				event.end = performance.now()
+				const endTime = performance.now()
 				if (this.petrichorId) {
-					let current = PETRICHOR_PARAMETER_PERFORMANCE_EVENTS[this.petrichorId] || []
-					current.push(event)
+					let current = PETRICHOR_PARAMETER_PERFORMANCE_EVENTS[this.petrichorId] || {maxTime: -Infinity, minTime: Infinity, totalTime: 0, executionCount: 0}
+					current.executionCount++
+                    const executionTime = endTime-startTime
+                    current.totalTime += executionTime
+                    current.maxTime = Math.max(current.maxTime, executionTime)
+                    current.minTime = Math.min(current.minTIme, executionTime)
 					PETRICHOR_PARAMETER_PERFORMANCE_EVENTS[this.petrichorId] = current
 				}
 				return result //PETRICHOR-MOD end
@@ -3322,7 +3317,7 @@ console.log("Webplayer v2.2.3 - 2023/03/23 (production)");
             }, e.prototype.toString = function() {
                 return n.SourceFormatter.executableToSrc(this)
             }, e.prototype.executeBlock = function(e, t) {
-				let performanceEvent = {start: performance.now()} //PETRICHOR-MOD
+				const startTime = performance.now() //PETRICHOR-MOD
                 var r, n, l = t.parentObject,
                     h = e.parameters;
                 switch (e.type) {
@@ -3378,10 +3373,14 @@ console.log("Webplayer v2.2.3 - 2023/03/23 (production)");
                     default:
                         t.executeBlock(e)
                 }
-				performanceEvent.end = performance.now()
+				const endTime = performance.now()
 				if (e.petrichorId) { //PETRICHOR-MOD start
-					let current = PETRICHOR_BLOCK_PERFORMANCE_STATS[e.petrichorId] || []
-					current.push(performanceEvent)
+					let current = PETRICHOR_BLOCK_PERFORMANCE_STATS[e.petrichorId] || {maxTime: -Infinity, minTime: Infinity, totalTime: 0, executionCount: 0}
+					current.executionCount++
+                    const executionTime = endTime-startTime
+                    current.totalTime += executionTime
+                    current.maxTime = Math.max(current.maxTime, executionTime)
+                    current.minTime = Math.min(current.minTIme, executionTime)
 					PETRICHOR_BLOCK_PERFORMANCE_STATS[e.petrichorId] = current
 				} //PETRICHOR-MOD end
             }, e
@@ -6519,16 +6518,20 @@ console.log("Webplayer v2.2.3 - 2023/03/23 (production)");
             }, t.prototype.blocks = function() {
                 return this._blocks || (this._blocks = i.__spread(this.script.stageBlocks(this.parentNode()))), this._blocks
             }, t.prototype.execute = function(e) {
-				let performanceEvent = {start: performance.now()} //PETRICHOR-MOD
+				const startTime = performance.now() //PETRICHOR-MOD
                 var t = this.executableForStepSize(e.maxStepSize(), e);
                 t.execute(e), this._blocks = t.blocksToExecuteLater, this.isImmediate = this._blocks.every((function(e) {
                     return e.isImmediate
                 })), t.isImmediate && this.execute(e)
-				performanceEvent.end = performance.now() //PETRICHOR-MOD start
+				const endTime = performance.now() //PETRICHOR-MOD start
 				const id = this.petrichorId || this.script.objectID
 				if (id) {
-					let current = PETRICHOR_SCRIPT_PERFORMANCE_EVENTS[id] || []
-					current.push(performanceEvent)
+					let current = PETRICHOR_SCRIPT_PERFORMANCE_EVENTS[id] || {maxTime: -Infinity, minTime: Infinity, totalTime: 0, executionCount: 0}
+					current.executionCount++
+                    const executionTime = endTime-startTime
+                    current.totalTime += executionTime
+                    current.maxTime = Math.max(current.maxTime, executionTime)
+                    current.minTime = Math.min(current.minTIme, executionTime)
 					PETRICHOR_SCRIPT_PERFORMANCE_EVENTS[id] = current
 				} else {debugger}//PETRICHOR-MOD end 
             }, t.prototype.isImmediatelyRecursive = function() {
